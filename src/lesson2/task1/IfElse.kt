@@ -159,8 +159,8 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
         b != x && b != z -> b
         else -> c
     }
-    if (x >= z + y) return -1
-    else return when {
+    return if (x >= z + y) -1
+    else when {
         sqr(x) < sqr(z) + sqr(y) -> 0
         sqr(x) > sqr(z) + sqr(y) -> 2
         else -> 1
