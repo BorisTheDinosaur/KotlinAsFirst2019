@@ -3,7 +3,9 @@
 package lesson2.task1
 
 import lesson1.task1.discriminant
+import lesson1.task1.sqr
 import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.sqrt
 
 /**
@@ -63,7 +65,19 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * Мой возраст. Для заданного 0 < n < 200, рассматриваемого как возраст человека,
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
-fun ageDescription(age: Int): String = TODO()
+fun ageDescription(age: Int): String {
+    if ((age > 0) && (age < 200)) {
+        val a = age % 100
+        val b = age % 10
+        return when {
+            (a == 11) || (a == 12) || (a == 13) || (a == 14) -> "$age лет"
+            (b == 1) -> "$age год"
+            (b == 2) || (b == 3) || (b == 4) -> "$age года"
+            else -> "$age лет"
+        }
+    }
+    return "не удволетворяет условию 0 < n < 200"
+}
 
 /**
  * Простая
@@ -77,6 +91,8 @@ fun timeForHalfWay(
     t2: Double, v2: Double,
     t3: Double, v3: Double
 ): Double = TODO()
+/*    t1 + (v2 * t2 + v3 * t3 - v1 * t1) / (2 * v2)
+*/
 
 /**
  * Простая
@@ -91,7 +107,17 @@ fun whichRookThreatens(
     kingX: Int, kingY: Int,
     rookX1: Int, rookY1: Int,
     rookX2: Int, rookY2: Int
-): Int = TODO()
+): Int {
+    val x = if ((kingX == rookX1) || (kingY == rookY1)) 1 else 0
+    val y = if ((kingX == rookX2) || (kingY == rookY2)) 1 else 0
+    return when {
+        (x == 1) && (y == 1) -> 3
+        (x == 1) && (y == 0) -> 1
+        (x == 0) && (y == 1) -> 2
+        else -> 0
+    }
+
+}
 
 /**
  * Простая
@@ -118,6 +144,19 @@ fun rookOrBishopThreatens(
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
+/*{
+    val x = max(max(a, b), c)
+    val z = min(min(a, b), c)
+    val y = if ()
+    if (x >= z + y) return -1
+    else return when {
+        sqr(x) < sqr(z) + sqr(y) -> 0
+        sqr(c) > sqr(z) + sqr(y) -> 2
+        else -> 1
+
+    }
+
+}*/
 
 /**
  * Средняя
