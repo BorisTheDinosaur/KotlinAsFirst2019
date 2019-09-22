@@ -5,7 +5,6 @@ package lesson2.task1
 import lesson1.task1.discriminant
 import lesson1.task1.sqr
 import kotlin.math.max
-import kotlin.math.min
 import kotlin.math.sqrt
 
 /**
@@ -70,7 +69,7 @@ fun ageDescription(age: Int): String {
         val a = age % 100
         val b = age % 10
         return when {
-            (a == 11) || (a == 12) || (a == 13) || (a == 14) -> "$age лет"
+            a in 11..14 -> "$age лет"
             (b == 1) -> "$age год"
             (b == 2) || (b == 3) || (b == 4) -> "$age года"
             else -> "$age лет"
@@ -99,9 +98,6 @@ fun timeForHalfWay(
     }
 }
 
-
-   /* t1 + (v2 * t2 + v3 * t3 - v1 * t1) / (2 * v2) */
-
 /**
  * Простая
  *
@@ -116,12 +112,12 @@ fun whichRookThreatens(
     rookX1: Int, rookY1: Int,
     rookX2: Int, rookY2: Int
 ): Int {
-    val x = if ((kingX == rookX1) || (kingY == rookY1)) 1 else 0
-    val y = if ((kingX == rookX2) || (kingY == rookY2)) 1 else 0
+    val x: Boolean = (kingX == rookX1) || (kingY == rookY1)
+    val y: Boolean = (kingX == rookX2) || (kingY == rookY2)
     return when {
-        (x == 1) && (y == 1) -> 3
-        (x == 1) && (y == 0) -> 1
-        (x == 0) && (y == 1) -> 2
+        x && y -> 3
+        x && !y -> 1
+        !x && y -> 2
         else -> 0
     }
 
@@ -141,7 +137,17 @@ fun rookOrBishopThreatens(
     kingX: Int, kingY: Int,
     rookX: Int, rookY: Int,
     bishopX: Int, bishopY: Int
-): Int = TODO()
+): Int {
+    val x: Boolean = (kingX == rookX) || (kingY == rookY)
+    val y: Boolean = (kingX + kingY) == (bishopX + bishopY) || (kingX - kingY) == (bishopX - bishopY)
+    return when {
+        x && y -> 3
+        x && !y -> 1
+        !x && y -> 2
+        else -> 0
+    }
+
+}
 
 /**
  * Простая
@@ -152,13 +158,9 @@ fun rookOrBishopThreatens(
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
-    val x = max(max(a, b), c)
-    val z = min(min(a, b), c)
-    val y = when {
-        a != x && a != z -> a
-        b != x && b != z -> b
-        else -> c
-    }
+    val x = maxOf(a, b, c)
+    val z = minOf(a, b, c)
+    val y = a + b + c - x - z
     return if (x >= z + y) -1
     else when {
         sqr(x) < sqr(z) + sqr(y) -> 0
@@ -176,4 +178,15 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = TODO()
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
+    return when {
+        (b < c) || (d < a) -> -1
+        (a == c) && (b == d) -> b - a
+        (c in a..b) && (d in a..b) -> d - c
+        (a in c..d) && (b in c..d) -> b - a
+        (c in a..b) && (d !in a..b) -> b - c
+        (a in c..d) && (b !in c..d) -> d - a
+        else -> 0
+    }
+}
+
