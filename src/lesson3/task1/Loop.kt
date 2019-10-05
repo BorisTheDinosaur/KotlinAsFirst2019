@@ -4,7 +4,6 @@ package lesson3.task1
 
 import lesson1.task1.sqr
 import kotlin.math.max
-import kotlin.math.min
 import kotlin.math.sqrt
 
 /**
@@ -144,10 +143,11 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
-    val a = max(m, n)
-    val b = m + n - a
-    for (i in 1..a)
-        if (sqr(i) in b..a) return true
+    var a = 1
+    for (i in 1..m / 2) {
+        if (sqr(a) in m..n) return true
+        a++
+    }
     return false
 }
 
@@ -169,9 +169,10 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  */
 fun collatzSteps(x: Int): Int {
     var c = 0
-    while (x != 1) {
-        if (x % 2 == 0) x / 2
-        else 3 * x + 1
+    var a = x
+    while (a != 1) {
+        if (a % 2 == 0) a /= 2
+        else a = 3 * a + 1
         c++
     }
     return c
@@ -238,7 +239,21 @@ fun hasDifferentDigits(n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+fun squareSequenceDigit(n: Int): Int {
+    var a = n
+    var b = 0
+    var d = 0
+    while (a != 0) {
+        b++
+        d = sqr(b)
+        while (d >= 0 && a != 0) {
+            d %= 10
+            a--
+        }
+    }
+    while (d !in 0..9) d /= 10
+    return d
+}
 
 /**
  * Сложная
