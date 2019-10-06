@@ -3,8 +3,12 @@
 package lesson3.task1
 
 import lesson1.task1.sqr
+import kotlin.Int.Companion.MAX_VALUE
 import kotlin.math.max
 import kotlin.math.sqrt
+import kotlin.math.pow
+import kotlin.math.abs
+
 
 /**
  * Пример
@@ -70,9 +74,9 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun digitNumber(n: Int): Int = when {
-    n < 0 -> 0
-    n in 0..9 -> 1
-    else -> digitNumber(n / 10) + digitNumber(n % 10)
+    abs(n) < 0 -> 0
+    abs(n) in 0..9 -> 1
+    else -> digitNumber(abs(n) / 10) + digitNumber(abs(n) % 10)
 }
 
 /**
@@ -81,10 +85,17 @@ fun digitNumber(n: Int): Int = when {
  * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
-fun fib(n: Int): Int = when (n) {
-    1 -> 1
-    2 -> 1
-    else -> fib(n - 2) + fib(n - 1)
+fun fib(n: Int): Int {
+    var a = 1
+    var b = 1
+    var c: Int
+    if (n in 1..2) b = 1
+    else for (i in 3..n) {
+        c = a
+        a = b
+        b = a + c
+    }
+    return b
 }
 
 /**
@@ -96,6 +107,7 @@ fun fib(n: Int): Int = when (n) {
 fun lcm(m: Int, n: Int): Int {
     var i = max(m, n) - 1
     while (i % m != 0 || i % n != 0) i++
+    if (i == 0) i = 1
     return i
 }
 
@@ -143,13 +155,16 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
-    var a = 1
-    for (i in 1..m / 2) {
-        if (sqr(a) in m..n) return true
-        a++
+    var i = 1
+    while (sqr(i) !in m..n) {
+        i++
+        if (i == MAX_VALUE) return false
     }
-    return false
+    return true
 }
+/*
+while (sqr(i) !in m..n) i++
+ */
 
 /**
  * Средняя
@@ -207,7 +222,27 @@ fun cos(x: Double, eps: Double): Double = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun revert(n: Int): Int = TODO()
+fun revert(n: Int): Int {
+    var m = 0
+    var c = n
+    val d = 10.0
+    while (c !in 0..9) {
+        c /= 10
+        m++
+    }
+    var b = 0
+    c = n
+    var l = 0
+    var e: Int
+    while (m != -1) {
+        e = (c / d.pow(m)).toInt()
+        b += (e * d.pow(l)).toInt()
+        c %= d.pow(m).toInt()
+        m--
+        l++
+    }
+    return b
+}
 
 /**
  * Средняя
@@ -228,7 +263,20 @@ fun isPalindrome(n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun hasDifferentDigits(n: Int): Boolean = TODO()
+fun hasDifferentDigits(n: Int): Boolean {
+    val a = n % 10
+    var m = 1
+    var c = n
+    val d = 10.0
+    while (c !in 0..9) {
+        c /= 10
+        m++
+    }
+    c = a
+    for (i in 1 until m) c += a * d.pow(i).toInt()
+    println(c)
+    return n - c != 0
+}
 
 /**
  * Сложная
@@ -240,21 +288,63 @@ fun hasDifferentDigits(n: Int): Boolean = TODO()
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun squareSequenceDigit(n: Int): Int {
-    var a = n
-    var b = 0
-    var d = 0
-    while (a != 0) {
-        b++
-        d = sqr(b)
-        while (d >= 0 && a != 0) {
-            d %= 10
-            a--
+    val d = 10.0
+    var c: Int
+    var s: Long = 1
+    var m: Int
+    var e: Int
+    if (n == 1) return 1
+    if (n == 2) return 4
+    for (i in 2..n) {
+        m = 1
+        c = sqr(i)
+        e = c
+        while (c !in 0..9) {
+            c /= 10
+            m++
         }
+        println(m)
+        s = (s * d.pow(m) + e).toLong()
+        println(s)
     }
-    while (d !in 0..9) d /= 10
-    return d
+    var a = revert(s.toInt())      // ошибка в переводе
+    println(a)
+    a /= d.pow(n).toInt()
+    println(a)
+    a %= d.pow(n - 1).toInt()
+    println(a)
+    return a
 }
 
+/*
+var a = n
+    var b = 0
+    var d = 1
+    var m: Int
+    var c: Int
+    val e = 10.0
+    MAIN@ while (a > 0) {
+        m = 1
+        b++
+        d = sqr(b)
+        c = d
+        while (c !in 0..9) {
+            c /= 10
+            m++
+        }
+        if (m >= a) {
+            if (d !in 0..9) {
+                var s: Double = d.toDouble()
+                s /= e.pow(m - a)
+                s %= e.pow(m - a - 1)
+                d = s.toInt()
+            }
+            break@MAIN
+        }
+        a -= m
+    }
+    return d
+ */
 /**
  * Сложная
  *
