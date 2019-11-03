@@ -71,7 +71,7 @@ fun ageDescription(age: Int): String {
         return when {
             a in 11..14 -> "$age лет"
             (b == 1) -> "$age год"
-            (b == 2) || (b == 3) || (b == 4) -> "$age года"
+            b in 2..4 -> "$age года"
             else -> "$age лет"
         }
     }
@@ -112,15 +112,14 @@ fun whichRookThreatens(
     rookX1: Int, rookY1: Int,
     rookX2: Int, rookY2: Int
 ): Int {
-    val x: Boolean = (kingX == rookX1) || (kingY == rookY1)
-    val y: Boolean = (kingX == rookX2) || (kingY == rookY2)
+    val x = (kingX == rookX1) || (kingY == rookY1)
+    val y = (kingX == rookX2) || (kingY == rookY2)
     return when {
         x && y -> 3
         x && !y -> 1
         !x && y -> 2
         else -> 0
     }
-
 }
 
 /**
@@ -138,15 +137,14 @@ fun rookOrBishopThreatens(
     rookX: Int, rookY: Int,
     bishopX: Int, bishopY: Int
 ): Int {
-    val x: Boolean = (kingX == rookX) || (kingY == rookY)
-    val y: Boolean = (kingX + kingY) == (bishopX + bishopY) || (kingX - kingY) == (bishopX - bishopY)
+    val x = (kingX == rookX) || (kingY == rookY)
+    val y = (kingX + kingY) == (bishopX + bishopY) || (kingX - kingY) == (bishopX - bishopY)
     return when {
         x && y -> 3
         x && !y -> 1
         !x && y -> 2
         else -> 0
     }
-
 }
 
 /**
@@ -178,15 +176,13 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
-    return when {
-        (b < c) || (d < a) -> -1
-        (a == c) && (b == d) -> b - a
-        (c in a..b) && (d in a..b) -> d - c
-        (a in c..d) && (b in c..d) -> b - a
-        (c in a..b) && (d !in a..b) -> b - c
-        (a in c..d) && (b !in c..d) -> d - a
-        else -> 0
-    }
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = when {
+    (b < c) || (d < a) -> -1
+    (a == c) && (b == d) -> b - a
+    (c in a..b) && (d in a..b) -> d - c
+    (a in c..d) && (b in c..d) -> b - a
+    (c in a..b) && (d !in a..b) -> b - c
+    (a in c..d) && (b !in c..d) -> d - a
+    else -> 0
 }
 

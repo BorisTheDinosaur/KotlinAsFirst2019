@@ -4,10 +4,7 @@ package lesson3.task1
 
 import lesson1.task1.sqr
 import kotlin.Int.Companion.MAX_VALUE
-import kotlin.math.max
-import kotlin.math.sqrt
-import kotlin.math.pow
-import kotlin.math.abs
+import kotlin.math.*
 
 
 /**
@@ -73,10 +70,14 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun digitNumber(n: Int): Int = when {
-    abs(n) < 0 -> 0
-    abs(n) in 0..9 -> 1
-    else -> digitNumber(abs(n) / 10) + digitNumber(abs(n) % 10)
+fun digitNumber(n: Int): Int {
+    var a = n
+    var i = 0
+    do {
+        a /= 10
+        i++
+    } while (a > 0)
+    return i
 }
 
 /**
@@ -156,11 +157,11 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
     var i = 1
-    while (sqr(i) !in m..n) {
+    while (i < sqrt(n.toDouble())) {
+        if (i >= sqrt(m.toDouble())) return true
         i++
-        if (i == MAX_VALUE) return false
     }
-    return true
+    return false
 }
 /*
 while (sqr(i) !in m..n) i++
@@ -202,7 +203,19 @@ fun collatzSteps(x: Int): Int {
  * Подумайте, как добиться более быстрой сходимости ряда при больших значениях x.
  * Использовать kotlin.math.sin и другие стандартные реализации функции синуса в этой задаче запрещается.
  */
-fun sin(x: Double, eps: Double): Double = TODO()
+fun sin(x: Double, eps: Double): Double {
+    var a = x
+    var b = 0.0
+    var i = 0
+    var j = 1
+    while (abs(a) >= eps) {
+        a = (-1.0).pow(i) * (x % (2 * PI)).pow(j) / factorial(j)
+        b += a
+        i++
+        j += 2
+    }
+    return b
+}
 
 /**
  * Средняя
@@ -213,7 +226,19 @@ fun sin(x: Double, eps: Double): Double = TODO()
  * Подумайте, как добиться более быстрой сходимости ряда при больших значениях x.
  * Использовать kotlin.math.cos и другие стандартные реализации функции косинуса в этой задаче запрещается.
  */
-fun cos(x: Double, eps: Double): Double = TODO()
+fun cos(x: Double, eps: Double): Double {
+    var a = x
+    var b = 1.0
+    var i = 1
+    var j = 2
+    while (abs(a) >= eps) {
+        a = (-1.0).pow(i) * (x % (2 * PI)).pow(j) / factorial(j)
+        b += a
+        i++
+        j += 2
+    }
+    return b
+}
 
 /**
  * Средняя
@@ -253,7 +278,7 @@ fun revert(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean = TODO()
+fun isPalindrome(n: Int): Boolean = revert(n) == n
 
 /**
  * Средняя
@@ -288,63 +313,17 @@ fun hasDifferentDigits(n: Int): Boolean {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun squareSequenceDigit(n: Int): Int {
-    val d = 10.0
-    var c: Int
-    var s: Long = 1
-    var m: Int
-    var e: Int
-    if (n == 1) return 1
-    if (n == 2) return 4
-    for (i in 2..n) {
-        m = 1
-        c = sqr(i)
-        e = c
-        while (c !in 0..9) {
-            c /= 10
-            m++
-        }
-        println(m)
-        s = (s * d.pow(m) + e).toLong()
-        println(s)
+    var a = 0.0
+    var i = 0
+    while (digitNumber(a.toInt()) < n) {
+        a *= 10.0.pow(digitNumber(sqr(i)))
+        a += sqr(i)
+        i++
     }
-    var a = revert(s.toInt())      // ошибка в переводе
-    println(a)
-    a /= d.pow(n).toInt()
-    println(a)
-    a %= d.pow(n - 1).toInt()
-    println(a)
-    return a
+    a = revert(a.toInt()) / (10.0.pow(n - 1)) % 10
+    return a.toInt()
 }
 
-/*
-var a = n
-    var b = 0
-    var d = 1
-    var m: Int
-    var c: Int
-    val e = 10.0
-    MAIN@ while (a > 0) {
-        m = 1
-        b++
-        d = sqr(b)
-        c = d
-        while (c !in 0..9) {
-            c /= 10
-            m++
-        }
-        if (m >= a) {
-            if (d !in 0..9) {
-                var s: Double = d.toDouble()
-                s /= e.pow(m - a)
-                s %= e.pow(m - a - 1)
-                d = s.toInt()
-            }
-            break@MAIN
-        }
-        a -= m
-    }
-    return d
- */
 /**
  * Сложная
  *
