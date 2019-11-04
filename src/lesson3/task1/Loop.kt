@@ -90,8 +90,7 @@ fun fib(n: Int): Int {
     var a = 1
     var b = 1
     var c: Int
-    if (n in 1..2) b = 1
-    else for (i in 3..n) {
+    for (i in 3..n) {
         c = a
         a = b
         b = a + c
@@ -128,11 +127,7 @@ fun minDivisor(n: Int): Int {
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int {
-    var i = n - 1
-    while (n % i != 0) i--
-    return i
-}
+fun maxDivisor(n: Int): Int = n / minDivisor(n)
 
 /**
  * Простая
