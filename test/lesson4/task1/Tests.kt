@@ -165,6 +165,7 @@ class Tests {
         assertEquals(listOf(2), factorize(2))
         assertEquals(listOf(3, 5, 5), factorize(75))
         assertEquals(listOf(2, 3, 3, 19), factorize(342))
+        assertEquals(listOf(2, 2, 5, 43669), factorize(873380))
     }
 
     @Test
@@ -185,6 +186,7 @@ class Tests {
         assertEquals(listOf(1, 2, 1, 0), convert(100, 4))
         assertEquals(listOf(1, 3, 12), convert(250, 14))
         assertEquals(listOf(2, 14, 12), convert(1000, 19))
+        assertEquals(listOf(0), convert(0, 2))
     }
 
     @Test
@@ -195,6 +197,7 @@ class Tests {
         assertEquals("13c", convertToString(250, 14))
         assertEquals("2ec", convertToString(1000, 19))
         assertEquals("z", convertToString(35, 36))
+        assertEquals("0", convertToString(0, 2))
         assertEquals("a02220281", convertToString(Int.MAX_VALUE, 11))
     }
 

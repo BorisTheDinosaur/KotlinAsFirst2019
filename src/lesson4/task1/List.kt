@@ -4,7 +4,6 @@ package lesson4.task1
 
 import lesson1.task1.discriminant
 import lesson1.task1.sqr
-import javax.swing.text.html.HTML.Tag.U
 import kotlin.math.sqrt
 import kotlin.math.pow
 
@@ -244,10 +243,10 @@ fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*
 fun convert(n: Int, base: Int): List<Int> {
     var a = n
     val list = mutableListOf<Int>()
-    while (a > 0) {
+    do {
         list.add(a % base)
         a /= base
-    }
+    } while (a > 0)
     return list.reversed()
 }
 
@@ -345,7 +344,7 @@ fun russian(n: Int): String {
     val list1 = listOf(
         "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять",
         "десять", "одиннадцать", "двенадцать", "тинадцать", "четырнадцать", "пятнадцать", "шестнадцать", "семнадцать",
-        "восемьнадцать", "девятнадцать"
+        "восемнадцать", "девятнадцать"
     )
     val list2 = listOf(
         "двадцать", "тридцать", "сорок", "пятьдесят", "шестьдесят", "семьдесят", "восемьдесят", "девеносто"
