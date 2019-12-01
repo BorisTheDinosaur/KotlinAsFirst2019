@@ -2,6 +2,9 @@
 
 package lesson5.task1
 
+import kotlin.math.max
+
+
 /**
  * Пример
  *
@@ -162,9 +165,32 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = TODO()
  *     mapOf("Emergency" to "911", "Police" to "02")
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
-fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> = TODO()
+fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
+    val map = mutableMapOf<String, String>()
+    for ((i, j) in mapB) {
+        if (i in mapA)
+            if (mapA[i] != j) map[i] = map.getOrDefault(i, j) + ", " + j
+            else map[i] = map.getOrDefault(i, j)
+        else map[i] = map.getOrDefault(i, j)
+    }
+    return map
+}
 
 /**
+ * val map = mutableMapOf<String, String>()
+val map1 = mutableMapOf<String, String>()
+if (mapA.size > mapB.size) {
+map.putAll(mapA)
+map1.putAll(mapB)
+} else {
+map.putAll(mapB)
+map1.putAll(mapA)
+}
+for ((i, j) in map1)
+if (map[i] != j) map[i] = map1.getOrDefault(i, j) + ", " + j
+else map[i] = map1.getOrDefault(i, j)
+println(map)
+return map
  * Средняя
  *
  * Для заданного списка пар "акция"-"стоимость" вернуть ассоциативный массив,
@@ -202,7 +228,11 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
+fun canBuildFrom(chars: List<Char>, word: String): Boolean {
+val a = word.toLowerCase()
+    for (i in a) if (i !in chars) return false
+    return true
+}
 
 /**
  * Средняя
@@ -216,7 +246,11 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
  * Например:
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
-fun extractRepeats(list: List<String>): Map<String, Int> = TODO()
+fun extractRepeats(list: List<String>): Map<String, Int> {
+    val map = mutableMapOf<String, Int>()
+    for (i in list) map[i] = map.getOrDefault(i, 0) + 1
+    return map.filter { it.value > 1 }
+}
 
 /**
  * Средняя
@@ -272,7 +306,12 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   findSumOfTwo(listOf(1, 2, 3), 4) -> Pair(0, 2)
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
-fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
+fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
+    val map = mutableMapOf<Int, Int>()
+    for (i in list.indices) if (list[i] !in map) map[number - list[i]] = i
+    else return map[list[i]]!! to i
+    return -1 to -1
+}
 
 /**
  * Очень сложная

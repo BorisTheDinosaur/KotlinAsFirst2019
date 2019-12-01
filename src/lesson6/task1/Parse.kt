@@ -2,6 +2,8 @@
 
 package lesson6.task1
 
+import lesson2.task2.daysInMonth
+
 /**
  * Пример
  *
@@ -69,7 +71,19 @@ fun main() {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun dateStrToDigit(str: String): String = TODO()
+fun dateStrToDigit(str: String): String {
+    val list = listOf(
+        "января", "февраля", "марта", "апреля", "мая", "июня",
+        "июля", "августа", "сентября", "октября", "ноября", "декабря"
+    )
+    val z = str.split(" ")
+    if (z.size != 3) return ""
+    val a = z[0].toInt()
+    var b = 0
+    for (i in 0..11) if (z[1] == list[i]) b = i + 1
+    val c = z[2].toInt()
+    return if (a !in 1..daysInMonth(b, c) || b == 0) "" else String.format("%02d.%02d.%d", a, b, c)
+}
 
 /**
  * Средняя
@@ -81,7 +95,24 @@ fun dateStrToDigit(str: String): String = TODO()
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
  * входными данными.
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    val list = listOf(
+        "", "января", "февраля", "марта", "апреля", "мая", "июня",
+        "июля", "августа", "сентября", "октября", "ноября", "декабря"
+    )
+    val z = digital.split(".")
+    if (z.size != 3) return ""
+    return try {
+        val a = z[0].toInt()
+        val b = list[z[1].toInt()]
+        val c = z[2].toInt()
+        if (a !in 1..daysInMonth(z[1].toInt(), c) || z[1].toInt() == 0) ""
+        else String.format("%d %s %d", a, b, c)
+    } catch (e: Exception) {
+        ""
+    }
+
+}
 
 /**
  * Средняя
@@ -97,7 +128,11 @@ fun dateDigitToStr(digital: String): String = TODO()
  *
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
-fun flattenPhoneNumber(phone: String): String = TODO()
+fun flattenPhoneNumber(phone: String): String {
+    return if (phone.matches(Regex("""\+?([0-9]|\s|-)*(\([0-9]+([0-9]|\s|-)*[0-9]*\))?([0-9]|\s|-)*""")))
+        Regex("""[-\s()]""").replace(phone, "")
+    else ""
+}
 
 /**
  * Средняя
@@ -109,7 +144,15 @@ fun flattenPhoneNumber(phone: String): String = TODO()
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int {
+    var max = -1
+    if (jumps.matches(Regex("""([0-9]*|\s|-|%)*"""))) {
+        for (a in Regex("""[0-9]+""").findAll(jumps))
+            if (a.value.toInt() > max) max = a.value.toInt()
+        return max
+    }
+    return max
+}
 
 /**
  * Сложная
@@ -122,7 +165,23 @@ fun bestLongJump(jumps: String): Int = TODO()
  * При нарушении формата входной строки, а также в случае отсутствия удачных попыток,
  * вернуть -1.
  */
-fun bestHighJump(jumps: String): Int = TODO()
+fun bestHighJump(jumps: String): Int {
+    val max = -1
+    var b = String()
+    try {
+        if (jumps.matches(Regex("""([0-9]|\s|-|%|\+)*"""))) {
+            for (a in Regex("""[0-9]*\s\+""").findAll(jumps)) {
+                b += a.value + " "
+            }
+            b = Regex("""[\s+]""").replace(b, " ")
+            val list = b.split(" ")
+            return list.max()!!.toInt()
+        }
+        return max
+    } catch (e: Exception) {
+        return -1
+    }
+}
 
 /**
  * Сложная
@@ -133,7 +192,16 @@ fun bestHighJump(jumps: String): Int = TODO()
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int = TODO()
+fun plusMinus(expression: String): Int {
+    require(expression.matches(Regex("""[0-9]*(\s[-+]+\s[0-9]*)*""")))
+    val list = expression.split(" ")
+    var a = list[0].toInt()
+    for (i in list.indices) {
+        if (list[i] == "+") a += list[i + 1].toInt()
+        if (list[i] == "-") a -= list[i + 1].toInt()
+    }
+    return a
+}
 
 /**
  * Сложная
@@ -209,3 +277,25 @@ fun fromRoman(roman: String): Int = TODO()
  *
  */
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
+ /*   {
+    require(commands.matches(Regex("""[><+\-\s]*|(\[[><+\-\s]*\])*""")))
+    val a = Regex("""[\s]""").replace(commands, "")
+    val list1 = a.split("")
+    val list = mutableListOf<Int>()
+    var x = cells / 2
+    for (i in 0 until cells) list.add(0)
+    try {
+        for (i in 0 until limit) {
+            when {
+                list1[i] == ">" -> x++
+                list1[i] == "<" -> x--
+                list1[i] == "+" -> list[x]++
+                list1[i] == "-" -> list[x]--
+            }
+        }
+        return list
+    } catch (e: Exception) {
+        return list
+    }
+}
+*/
