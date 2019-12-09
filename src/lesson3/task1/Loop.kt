@@ -3,7 +3,6 @@
 package lesson3.task1
 
 import lesson1.task1.sqr
-import kotlin.Int.Companion.MAX_VALUE
 import kotlin.math.*
 
 
@@ -105,10 +104,14 @@ fun fib(n: Int): Int {
  * минимальное число k, которое делится и на m и на n без остатка
  */
 fun lcm(m: Int, n: Int): Int {
-    var i = max(m, n) - 1
-    while (i % m != 0 || i % n != 0) i++
+    var i = maxDivisor(max(m, n))
+    var j = minDivisor(max(m, n))
+    while (i % m != 0 && i % m != 0) {
+        j = minDivisor(max(m, n) / j)
+        i *= j
+    }
     if (i == 0) i = 1
-    return i
+    return abs(i)
 }
 
 /**
@@ -233,15 +236,10 @@ fun cos(x: Double, eps: Double): Double {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun revert(n: Int): Int {
-    var m = 0
+    var m = digitNumber(n) - 1
     var c = n
     val d = 10.0
-    while (c !in 0..9) {
-        c /= 10
-        m++
-    }
     var b = 0
-    c = n
     var l = 0
     var e: Int
     while (m != -1) {
@@ -275,14 +273,9 @@ fun isPalindrome(n: Int): Boolean = revert(n) == n
  */
 fun hasDifferentDigits(n: Int): Boolean {
     val a = n % 10
-    var m = 1
-    var c = n
+    val m = digitNumber(n)
+    var c = a
     val d = 10.0
-    while (c !in 0..9) {
-        c /= 10
-        m++
-    }
-    c = a
     for (i in 1 until m) c += a * d.pow(i).toInt()
     println(c)
     return n - c != 0

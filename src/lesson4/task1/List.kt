@@ -214,7 +214,7 @@ fun factorize(n: Int): List<Int> {
         if (b % a == 0) {
             list += a
             b /= a
-            a = 2
+            a = 1
         }
         a++
     }
@@ -339,7 +339,7 @@ fun roman(n: Int): String {
  */
 fun russian(n: Int): String {
     val list1 = listOf(
-        "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять",
+        "", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять",
         "десять", "одиннадцать", "двенадцать", "тинадцать", "четырнадцать", "пятнадцать", "шестнадцать", "семнадцать",
         "восемнадцать", "девятнадцать"
     )
@@ -352,17 +352,23 @@ fun russian(n: Int): String {
     val list4 = listOf("одна", "две", "три", "четыре")
     val list5 = listOf("тысяча", "тысячи", "тысяч")
     val list = mutableListOf<String>()
-    if (n % 100 in 1..19) list += list1[n % 100 - 1]
-    if (n / 10 % 10 in 2..9) list += list2[n / 100 % 10 - 2]
-    if (n / 100 % 10 > 0) list += list3[n / 1000 % 10 - 1]
-
-    if (n / 1000 % 100 in 1..19) list += when (n / 1000 % 100) {
-        1 -> list5[0] + list4[0]
-        in 2..4 -> list5[1] + list4[n / 1000 % 100 - 1]
-        else -> list5[2] + list1[n / 10000 % 100 - 1]
+    list += if (n % 100 in 1..19) list1[n % 100]
+    else list1[n % 10]
+    if (n / 10 % 10 in 2..9) list += list2[n / 10 % 10 - 2]
+    if (n / 100 % 10 > 0) list += list3[n / 100 % 10 - 1]
+    if (n / 1000 > 0) when (n / 1000 % 10) {
+        1 -> {
+            list += list5[0]
+            list += list4[0]
+        }
+        in 2..4 -> {
+            list += list5[1]
+            list += list4[n / 1000 % 10 - 1]
+        }
+        else -> list += list5[2]
     }
-    if (n / 1000 > 19) list += list5[2]
+    if (n / 1000 % 100 in 5..19) list += list1[n / 1000 % 100]
     if (n / 10000 % 10 in 2..9) list += list2[n / 10000 % 10 - 2]
-    if (n / 100000 > 0) list += list3[n / 10000 % 10 - 1]
-    return list.reversed().joinToString(separator = " ")
+    if (n / 100000 > 0) list += list3[n / 100000 - 1]
+    return list.filter { it != "" }.reversed().joinToString(separator = " ")
 }

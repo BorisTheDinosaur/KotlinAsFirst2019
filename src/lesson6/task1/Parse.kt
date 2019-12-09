@@ -78,11 +78,15 @@ fun dateStrToDigit(str: String): String {
     )
     val z = str.split(" ")
     if (z.size != 3) return ""
-    val a = z[0].toInt()
-    var b = 0
-    for (i in 0..11) if (z[1] == list[i]) b = i + 1
-    val c = z[2].toInt()
-    return if (a !in 1..daysInMonth(b, c) || b == 0) "" else String.format("%02d.%02d.%d", a, b, c)
+    return try {
+        val a = z[0].toInt()
+        var b = 0
+        for (i in 0..11) if (z[1] == list[i]) b = i + 1
+        val c = z[2].toInt()
+        return if (a !in 1..daysInMonth(b, c) || b == 0) "" else String.format("%02d.%02d.%d", a, b, c)
+    } catch (e: Exception) {
+        ""
+    }
 }
 
 /**
@@ -277,7 +281,7 @@ fun fromRoman(roman: String): Int = TODO()
  *
  */
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
- /*   {
+/*   {
     require(commands.matches(Regex("""[><+\-\s]*|(\[[><+\-\s]*\])*""")))
     val a = Regex("""[\s]""").replace(commands, "")
     val list1 = a.split("")

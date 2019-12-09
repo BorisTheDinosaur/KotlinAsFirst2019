@@ -2,7 +2,6 @@
 
 package lesson5.task1
 
-import kotlin.math.max
 
 
 /**
@@ -113,9 +112,8 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")) -> false
  */
 fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
-    for ((i) in a) {
-        if (a[i] != b[i]) return false
-    }
+    for ((key, value) in a)
+        if (value != b[key]) return false
     return true
 }
 
@@ -133,10 +131,8 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
  *   subtractOf(a = mutableMapOf("a" to "z"), mapOf("a" to "z"))
  *     -> a changes to mutableMapOf() aka becomes empty
  */
-fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit {
-    for ((i, j) in b) {
-        if (a[i] == b[i] && a[j] == b[j]) a.remove(i)
-    }
+fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
+    for ((i, j) in b) if (a[i] == j) a.remove(i)
 }
 
 /**
@@ -187,8 +183,8 @@ map.putAll(mapB)
 map1.putAll(mapA)
 }
 for ((i, j) in map1)
-if (map[i] != j) map[i] = map1.getOrDefault(i, j) + ", " + j
-else map[i] = map1.getOrDefault(i, j)
+if (map[ i] != j) map[ i] = map1.getOrDefault(i, j) + ", " + j
+else map[ i] = map1.getOrDefault(i, j)
 println(map)
 return map
  * Средняя
@@ -229,8 +225,9 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
 fun canBuildFrom(chars: List<Char>, word: String): Boolean {
-val a = word.toLowerCase()
-    for (i in a) if (i !in chars) return false
+    val list = mutableListOf<Char>()
+    for (i in chars) list += i.toLowerCase()
+    for (i in word.toLowerCase()) if (i !in list) return false
     return true
 }
 
