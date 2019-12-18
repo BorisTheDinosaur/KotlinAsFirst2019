@@ -133,7 +133,7 @@ fun dateDigitToStr(digital: String): String {
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
 fun flattenPhoneNumber(phone: String): String {
-    return if (phone.matches(Regex("""\+?([0-9]|\s|-)*(\([0-9]+([0-9]|\s|-)*[0-9]*\))?([0-9]|\s|-)*""")))
+    return if (phone.matches(Regex("""\+?([0-9]|\s|-)+(\([0-9]+([0-9]|\s|-)*[0-9]*\))?([0-9]|\s|-)*""")))
         Regex("""[-\s()]""").replace(phone, "")
     else ""
 }
@@ -197,7 +197,7 @@ fun bestHighJump(jumps: String): Int {
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
 fun plusMinus(expression: String): Int {
-    require(expression.matches(Regex("""[0-9]*(\s[-+]+\s[0-9]*)*""")))
+    require(expression.matches(Regex("""[0-9]+(\s[-+]+\s[0-9]+)*""")))
     val list = expression.split(" ")
     var a = list[0].toInt()
     for (i in list.indices) {
