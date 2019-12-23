@@ -95,8 +95,9 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
  */
 fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
     val map = mutableMapOf<Int, List<String>>()
+    val list = mutableListOf<String>()
     for ((a, b) in grades) {
-        map[b] = map.getOrDefault(b, listOf()) + a
+        map[b] = map.getOrDefault(b, list) + a
     }
     return map
 }

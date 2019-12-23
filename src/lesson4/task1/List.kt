@@ -368,6 +368,7 @@ fun russian(n: Int): String {
         else -> list += list5[2]
     }
     if (n / 1000 % 100 in 5..19) list += list1[n / 1000 % 100]
+    else if (n / 1000 % 10 !in 1..4) list += list1[n / 1000 % 10]
     if (n / 10000 % 10 in 2..9) list += list2[n / 10000 % 10 - 2]
     if (n / 100000 > 0) list += list3[n / 100000 - 1]
     return list.filter { it != "" }.reversed().joinToString(separator = " ")
