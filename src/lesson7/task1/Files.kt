@@ -79,7 +79,24 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  *
  */
 fun sibilants(inputName: String, outputName: String) {
-    TODO()
+    val z = File(inputName).readText()
+    val set = setOf('ж', 'ч', 'ш', 'щ')
+    val f = StringBuilder()
+    for (i in z.indices) {
+        val a = if (i > 0 && z[i - 1].toLowerCase() in set) {
+            val k = z[i].isUpperCase()
+            val w = when (z[i].toLowerCase()) {
+                'ы' -> 'и'
+                'я' -> 'а'
+                'ю' -> 'у'
+                else -> z[i]
+            }
+            if (k) w.toUpperCase()
+            else w
+        } else z[i]
+        f.append(a)
+    }
+    File(outputName).writeText(f.toString())
 }
 
 /**
@@ -100,7 +117,16 @@ fun sibilants(inputName: String, outputName: String) {
  *
  */
 fun centerFile(inputName: String, outputName: String) {
-    TODO()
+    val f = StringBuilder()
+    var max = 0
+    for (i in File(inputName).readLines()) {
+        if (max < i.trim().length) max = i.trim().length
+    }
+    for (i in File(inputName).readLines()) {
+        val s = (max - i.trim().length) / 2
+        f.append(" ".repeat(s), i.trim(), "\n")
+    }
+    File(outputName).writeText(f.toString())
 }
 
 /**
@@ -165,7 +191,6 @@ fun alignFileByWidth(inputName: String, outputName: String) {
     }
     File(outputName).writeText(text.toString())
 }
-
 
 
 /**
